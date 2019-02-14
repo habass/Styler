@@ -1,28 +1,71 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Slide from './Slide'
+import { product } from './Products';
+import { Swipeable} from 'react-swipeable';
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
+let rail = [];
+
+
+class App extends Component  {
+
+//--------------------------------------------------------------
+    constructor(props) {
+        super(props);
+        this.state = {
+//Stores which slide is currently visible
+            currentIndex : 0,
+        }
+        this.swipeRight = this.swipeRight.bind(this);
+        this.swipeLeft = this.swipeLeft.bind(this);
+    }
+
+
+//----------------------------------------------------------------    
+//Updates slide
+   swipeRight(e) {
+        if (this.state.currentIndex === product.length - 1) {
+            return this.setState({
+                currentIndex: 0
+            })
+        }
+        this.setState({
+            currentIndex: this.state.currentIndex + 1
+        })
+
+        // let addRail = product[this.currentIndex];
+
+    }
+//----------------------------------------------------------------
+//Previous slide
+    swipeLeft() {
+    if (this.state.currentIndex === product.length - 1) {
+        return this.setState({
+            currentIndex: 0
+        })
+    }
+
+    this.setState({
+        currentIndex: this.state.currentIndex + 1
+    })
+ }
+   
+//----------------------------------------------------------------    
+    render() {
+        return (
+        <div>
+            <Swipeable onSwipedRight={this.swipeRight}
+                       onSwipedLeft={this.swipeLeft}>
+                <Slide 
+                    source={product[this.state.currentIndex].source}
+                    name={product[this.state.currentIndex].name}
+                    price={product[this.state.currentIndex].price}
+                    id={product[this.state.currentIndex].id}>
+                </Slide>
+            </Swipeable>
+        </div>
+        );
+    }    
+    
 }
 
 export default App;
